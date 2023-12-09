@@ -1,5 +1,5 @@
 # DFDurand
-Personal website of my awesome little brother
+Personal website of my awesome little brother.
 
 ![Demo](https://dfdurand.com/static/images/banner.png)
 
