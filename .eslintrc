@@ -1,0 +1,73 @@
+{
+  "extends": "next",
+  "plugins": [
+    "sort-destructure-keys",
+    "sort-keys-fix",
+    "typescript-sort-keys"
+  ],
+  "rules": {
+    "semi": "warn",
+    "react/prop-types": 0,
+    "react/no-unescaped-entities": 0,
+    "func-style": ["error", "expression"],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "next": "return",
+        "prev": "*"
+      },
+      {
+        "blankLine": "always",
+        "next": "*",
+        "prev": "directive"
+      },
+      {
+        "blankLine": "any",
+        "next": "directive",
+        "prev": "directive"
+      },
+      {
+        "blankLine": "always",
+        "next": "*",
+        "prev": ["case", "default"]
+      },
+      {
+        "blankLine": "never",
+        "next": "case",
+        "prev": ["case", "default"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin", // Built-in imports (come from NodeJS native) go first
+          "external", // <- External imports
+          "internal", // <- Absolute imports
+          ["sibling", "parent"], // <- Relative imports, the sibling and parent types they can be mingled together
+          "index", // <- index imports
+          "unknown" // <- unknown
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/newline-after-import": ["error", { "count": 1 }],
+    "sort-imports": ["error",  {
+      "ignoreCase": false,
+      "ignoreDeclarationSort": true,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": [
+        "none", "all", "multiple", "single"
+      ],
+      "allowSeparatedGroups": true
+    }],
+    "import/no-relative-packages": "error",
+    "sort-keys-fix/sort-keys-fix": "warn",
+    "prefer-destructuring": ["warn"]
+  }
+}

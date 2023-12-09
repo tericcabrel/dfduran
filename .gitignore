@@ -1,0 +1,15 @@
+*.log
+.DS_Store
+.next
+node_modules
+public/sitemap.xml
+public/robots.txt
+public/feed.xml
+.vercel
+.env
+
+# Contentlayer
+.contentlayer
+.env*.local
+notes.txt
+tsconfig.tsbuildinfo

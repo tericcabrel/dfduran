@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "year": 2023,
+      "date": "August 2023",
+      "title": "Master degree in Engineering and Embedded Systems",
+      "description": "Here are the major topics I learned and worked on: Machine Learning, Automation, Electronics sensors, IoT, Computer Network and security, Embedded Systems programming using the following languages: C/C++ , Matlab/Simulink and Python.",
+      "school": "Polytechnic University - Annecy, France"
+    },
+    {
+      "year": 2021,
+      "date": "August 2021",
+      "title": "Bachelor degree in Robotics and Smart Systems",
+      "description": "During this year, I learned about Computer network suchs GSM, BLE, 4G, and WIFI; Electronic design and micro-electronics, Embedded signal processing and programming.",
+      "school": "Polytechnic University - Marseille, France"
+    },
+    {
+      "year": 2020,
+      "date": "August 2020",
+      "title": "Bachelor degree in industrial robotics",
+      "description": "Three years of learning where I learned how to automate the factory chain of company using Electronics, sensors, captors and more.",
+      "school": "Polytechnic University - Douala, Cameroon"
+    }
+  ]
+}

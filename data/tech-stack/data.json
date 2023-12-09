@@ -1,0 +1,25 @@
+{
+  "items": [
+    "Python",
+    "C/C++",
+    "Matlab/Simulink",
+    "ROS1/ROS",
+    "AWS",
+    "IoT",
+    "MySQL",
+    "MongoDB",
+    "MQTT",
+    "LoRa/LoRaWAN",
+    "BLE",
+    "WIFI",
+    "NFC/RFID",
+    "Raspberry PI",
+    "Arduino",
+    "ESP32",
+    "Tensorflow",
+    "OpenCV",
+    "MLOps",
+    "Git",
+    "Azure DevOps"
+  ]
+}
