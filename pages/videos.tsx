@@ -1,12 +1,12 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
-import { EmptyState } from '../components/empty-state';
-import { Container } from '../components/layout/container';
-import { SearchInput } from '../components/search-input';
-import { SEO } from '../components/seo/seo';
-import { VideoCard } from '../components/video-card';
-import { useVideoSearch } from '../lib/hooks/use-video-search';
+import { EmptyState } from 'components/empty-state';
+import { Container } from 'components/layout/container';
+import { SearchInput } from 'components/search-input';
+import { SEO } from 'components/seo/seo';
+import { VideoCard } from 'components/video-card';
+import { useVideoSearch } from 'lib/hooks/use-video-search';
 
 export default function Page() {
   const search = useVideoSearch();

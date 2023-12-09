@@ -5,11 +5,10 @@ import { BlogCard } from 'components/blog-card';
 import { FeaturedBlogCard } from 'components/featured-blog-card';
 import { Container } from 'components/layout/container';
 import { SearchInput } from 'components/search-input';
+import { SEO } from 'components/seo/seo';
 import { TagCheckboxGroup } from 'components/tag-checkbox-group';
 import { allFeaturedBlogs } from 'lib/contentlayer-utils';
 import { useBlogSearch } from 'lib/hooks/use-blog-search';
-
-import { SEO } from '../../components/seo/seo';
 
 export default function Page() {
   const search = useBlogSearch();

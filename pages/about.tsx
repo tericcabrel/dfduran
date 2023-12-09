@@ -3,14 +3,13 @@ import type { GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
+import { Container } from 'components/layout/container';
+import { MDXComponents } from 'components/mdx-components';
+import { SEO } from 'components/seo/seo';
 import { About } from 'contentlayer/generated';
-
-import { Container } from '../components/layout/container';
-import { MDXComponents } from '../components/mdx-components';
-import { SEO } from '../components/seo/seo';
-import { aboutData } from '../lib/contentlayer-utils';
-import { formatDate } from '../lib/format-date';
-import { getAbsoluteURL } from '../lib/router-utils';
+import { aboutData } from 'lib/contentlayer-utils';
+import { formatDate } from 'lib/format-date';
+import { getAbsoluteURL } from 'lib/router-utils';
 
 export default function AboutPage({ about, ogImageUrl }: { about: About; ogImageUrl: string }) {
   const Component = useMDXComponent(about.body.code);

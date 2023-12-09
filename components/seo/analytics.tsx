@@ -1,4 +1,4 @@
-import { isProduction } from '../../lib/env';
+import { isProduction } from 'lib/env';
 
 export const Analytics = () => {
   if (!isProduction) {

@@ -1,6 +1,6 @@
 import { NextSeo } from 'next-seo';
 
-import { siteConfig } from '../../site.config';
+import { siteConfig } from 'site.config';
 
 type Props = {
   title?: string;

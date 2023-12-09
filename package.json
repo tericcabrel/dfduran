@@ -10,6 +10,7 @@
     "env:pull": "vercel env pull",
     "build": "next build",
     "postbuild": "yarn rss && yarn sitemap",
+    "content:generate": "contentlayer build",
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",

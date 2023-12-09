@@ -9,13 +9,12 @@ import { BlogIcon, TwitterIcon } from 'components/icons';
 import { Container } from 'components/layout/container';
 import { LinkItem } from 'components/link-item';
 import { MDXComponents } from 'components/mdx-components';
+import { SEO } from 'components/seo/seo';
 import { SubscribeForm } from 'components/subscribe-form';
 import { Blog, allBlogs } from 'contentlayer/generated';
 import { isNewsletterEnabled } from 'lib/env';
 import { formatDate } from 'lib/format-date';
 import { getAbsoluteURL } from 'lib/router-utils';
-
-import { SEO } from '../../components/seo/seo';
 
 export default function BlogPage({ blog, ogImageUrl }: { blog: Blog; ogImageUrl: string }) {
   const Component = useMDXComponent(blog.body.code);

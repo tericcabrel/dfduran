@@ -1,12 +1,11 @@
 import { Box, Heading, Stack, Text } from '@chakra-ui/react';
 
+import { Container } from 'components/layout/container';
+import { MDXComponents } from 'components/mdx-components';
+import { ProjectCard } from 'components/project-card';
+import { SEO } from 'components/seo/seo';
 import { allProjects } from 'contentlayer/generated';
-
-import { Container } from '../components/layout/container';
-import { MDXComponents } from '../components/mdx-components';
-import { ProjectCard } from '../components/project-card';
-import { SEO } from '../components/seo/seo';
-import { siteConfig } from '../site.config';
+import { siteConfig } from 'site.config';
 
 export default function ProjectPage() {
   return (

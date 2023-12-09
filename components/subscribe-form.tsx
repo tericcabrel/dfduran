@@ -1,6 +1,6 @@
 import { Alert, Box, DarkMode, Flex, Heading, Spinner, Text, chakra } from '@chakra-ui/react';
 
-import { useSubscribeForm } from '../lib/hooks/use-subscribe-form';
+import { useSubscribeForm } from 'lib/hooks/use-subscribe-form';
 
 type Props = {
   state: string;
