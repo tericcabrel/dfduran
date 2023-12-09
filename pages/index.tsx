@@ -7,7 +7,6 @@ import {
   Flex,
   HStack,
   Heading,
-  HeadingProps,
   Icon,
   SimpleGrid,
   Stack,
@@ -18,10 +17,11 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import { Emoji } from 'components/emoji';
 import { EmailIcon, GithubIcon, LinkedInIcon, TwitterIcon, YouTubeIcon } from 'components/icons';
+import { Container } from 'components/layout/container';
 import { LinkItem } from 'components/link-item';
 import { ProjectCard } from 'components/project-card';
 import { SubscribeForm } from 'components/subscribe-form';
@@ -36,45 +36,11 @@ import {
 import { isNewsletterEnabled } from 'lib/env';
 import { siteConfig } from 'site.config';
 
-import { Container } from '../components/layout/container';
-
-type AchievementItemProps = PropsWithChildren<{
-  icon: React.FC;
-}>;
-
 type TimelineStepProps = {
   date: string;
   description: React.ReactNode;
   school: string;
   title: string;
-};
-
-const AchievementItem = ({ icon, children }: AchievementItemProps) => {
-  return (
-    <HStack spacing="3">
-      <Icon as={icon} fontSize="4xl" />
-      <Text fontFamily="heading" fontSize="xl">
-        {children}
-      </Text>
-    </HStack>
-  );
-};
-
-const MainHeading = (props: HeadingProps) => {
-  return (
-    <Heading
-      as="h1"
-      width="full"
-      fontFamily="heading"
-      fontSize={{ base: '4rem', md: '6rem' }}
-      letterSpacing="tight"
-      lineHeight="1"
-      userSelect="none"
-      color="white"
-      marginBottom="4"
-      {...props}
-    />
-  );
 };
 
 const TimelineStep = ({ date, title, description, school }: TimelineStepProps) => {
@@ -102,12 +68,24 @@ export default function HomePage() {
   return (
     <Container>
       {/* Fabrice Durand DJIATSA - Engineer in Numerical Systems and Embedded  */}
-      <Flex direction="column" paddingY="24">
-        <MainHeading>Fabrice Durand DJIATSA</MainHeading>
+      <Flex direction="column" paddingY={['12', '24']}>
+        <Heading
+          as="h1"
+          width="full"
+          fontFamily="heading"
+          fontSize={{ base: '2.5rem', md: '6rem' }}
+          letterSpacing="tight"
+          lineHeight="1"
+          userSelect="none"
+          color="white"
+          marginBottom="4"
+        >
+          Fabrice Durand DJIATSA
+        </Heading>
         <Text
           color="blue.600"
           display="block"
-          fontSize="5xl"
+          fontSize={['3xl', '5xl']}
           fontFamily="heading"
           fontWeight="bold"
           lineHeight="1.2"
@@ -131,8 +109,18 @@ export default function HomePage() {
         {/* YouTube and GitHub */}
         <Box marginTop={{ base: '8', md: '14' }} width="full">
           <Flex direction={{ base: 'column', md: 'row' }} gap={{ base: '5', md: '10' }}>
-            <AchievementItem icon={YouTubeIcon}>Content Creator</AchievementItem>
-            <AchievementItem icon={GithubIcon}>IoT Enthusiast</AchievementItem>
+            <HStack spacing="3">
+              <Icon as={YouTubeIcon} fontSize="4xl" />
+              <Text fontFamily="heading" fontSize="xl">
+                Content Creator
+              </Text>
+            </HStack>
+            <HStack spacing="3">
+              <Icon as={GithubIcon} fontSize="4xl" />
+              <Text fontFamily="heading" fontSize="xl">
+                IoT Enthusiast
+              </Text>
+            </HStack>
           </Flex>
         </Box>
       </Flex>
@@ -163,7 +151,7 @@ export default function HomePage() {
 
           <Heading
             lineHeight="1"
-            fontSize={{ base: '3rem', lg: '6.25rem', md: '5rem' }}
+            fontSize={{ base: '2.5rem', lg: '6.25rem', md: '5rem' }}
             letterSpacing="tight"
           >
             I build{' '}
@@ -180,7 +168,7 @@ export default function HomePage() {
           </Text>
 
           {/* Profile links */}
-          <SimpleGrid columns={2} marginTop="10" spacing="10" maxWidth="16rem">
+          <SimpleGrid columns={2} marginTop="10" spacing="10" maxWidth="20rem">
             <LinkItem icon={YouTubeIcon} href={siteConfig.profiles.youtube}>
               YouTube
             </LinkItem>
@@ -198,8 +186,13 @@ export default function HomePage() {
       </Flex>
 
       {/* School Background */}
-      <Box as="section" aria-labelledby="heading" py="vGutter">
-        <Heading size="3xl" letterSpacing="tight">
+      <Box
+        as="section"
+        aria-labelledby="heading"
+        paddingTop={[0, 0, 'vGutter']}
+        paddingBottom="vGutter"
+      >
+        <Heading size={['2xl', '3xl']} letterSpacing="tight">
           My School Background
         </Heading>
         <VStack spacing={10} marginTop="vGutter" align="stretch">
@@ -216,8 +209,8 @@ export default function HomePage() {
       </Box>
 
       {/* Featured projects */}
-      <Box as="section" py="vGutter">
-        <Heading size="3xl" letterSpacing="tight">
+      <Box as="section" paddingTop={[0, 0, 'vGutter']} paddingBottom="vGutter">
+        <Heading size={['2xl', '3xl']} letterSpacing="tight">
           Featured Projects
         </Heading>
         <Box marginTop="vGutter">
@@ -230,8 +223,8 @@ export default function HomePage() {
       </Box>
 
       {/* Featured Videos */}
-      <Box as="section" py="vGutter" position="relative">
-        <Heading size="3xl" letterSpacing="tight" position="relative">
+      <Box as="section" position="relative" paddingTop={[0, 0, 'vGutter']} paddingBottom="vGutter">
+        <Heading size={['2xl', '3xl']} letterSpacing="tight" position="relative">
           Featured Videos
         </Heading>
         <Box marginTop="20" marginBottom="10">
@@ -248,9 +241,9 @@ export default function HomePage() {
       </Box>
 
       {/* Tools & Softwares */}
-      <Box as="section" py="vGutter">
+      <Box as="section" paddingTop={[0, 0, 'vGutter']} paddingBottom="vGutter">
         <Box marginBottom="16">
-          <Heading size="3xl" letterSpacing="tight">
+          <Heading size={['2xl', '3xl']} letterSpacing="tight">
             Tools &amp; Softwares
           </Heading>
           <Text marginTop="5" fontSize="lg" maxWidth={{ md: '45rem' }}>
@@ -261,7 +254,12 @@ export default function HomePage() {
 
         <Wrap spacing="10">
           {allTechStacks.map((techStack) => (
-            <WrapItem fontFamily="heading" fontSize="3xl" color="blue.600" key={techStack}>
+            <WrapItem
+              fontFamily="heading"
+              fontSize={['2xl', '3xl']}
+              color="blue.600"
+              key={techStack}
+            >
               {techStack}
             </WrapItem>
           ))}

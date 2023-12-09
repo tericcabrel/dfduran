@@ -107,7 +107,7 @@ export const VideoCard = (props: VideoCardProps) => {
               </Badge>
             </DarkMode>
           </Box>
-          <Box>{formatPublishDate(video.publishedAt)}</Box>
+          <Box display={['none', 'inline-block']}>{formatPublishDate(video.publishedAt)}</Box>
         </HStack>
       </Stack>
     </LinkBox>

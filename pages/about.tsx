@@ -37,7 +37,7 @@ export default function AboutPage({ about, ogImageUrl }: { about: About; ogImage
             overflow="hidden"
             marginTop="10"
             marginBottom="16"
-            height={600}
+            height={[200, 400, 600]}
           >
             <Image src={about.imageTop} alt={about.name} fill priority />
           </Box>
@@ -54,7 +54,13 @@ export default function AboutPage({ about, ogImageUrl }: { about: About; ogImage
             <Component components={MDXComponents} />
           </Box>
 
-          <Box position="relative" rounded="lg" overflow="hidden" marginTop="10" height={600}>
+          <Box
+            position="relative"
+            rounded="lg"
+            overflow="hidden"
+            marginTop="10"
+            height={[200, 400, 600]}
+          >
             <Image src={about.imageBottom} alt={about.name} fill priority />
           </Box>
         </article>

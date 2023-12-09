@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, Text } from '@chakra-ui/react';
+import { Box, HStack, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
 import { siteConfig } from 'site.config';
 
@@ -19,7 +19,7 @@ export const Footer = () => {
           </Text>
         </Box>
 
-        <HStack marginTop="9" spacing={{ base: '8', md: '10' }}>
+        <SimpleGrid columns={[2, 4]} marginTop="9" spacing={{ base: '8', md: '10' }} maxWidth={435}>
           <LinkItem href={siteConfig.profiles.youtube} icon={YouTubeIcon}>
             YouTube
           </LinkItem>
@@ -32,7 +32,7 @@ export const Footer = () => {
           <LinkItem href={siteConfig.profiles.email} icon={EmailIcon}>
             Email
           </LinkItem>
-        </HStack>
+        </SimpleGrid>
 
         <Text marginTop="20" opacity="0.7">
           All rights reserved &copy; Fabrice Durand DJIATSA {new Date().getFullYear()}
