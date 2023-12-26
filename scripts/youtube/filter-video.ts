@@ -36,6 +36,7 @@ const VIDEO_URLS_TO_EXCLUDE = [
   'https://youtu.be/g_ItQ7DxDWk?si=eAlvKhrPgyUmZiKd',
   'https://youtu.be/ZER27lTktiw?si=BhAIF71VqQy8b7G4',
   'https://youtu.be/dBlXysmFXn8?si=d7QXJndZBdEfmcBH',
+  'https://youtu.be/ZYkowGUWvv4?si=e8RYKoeACeFgndCI',
 ];
 const VIDEO_IDS_TO_BE_FEATURED = ['hNyjTxNQqhs', 'Q_H35NNq9e0', 'VK6rUFdiQ24', '2SCN2leGfmo'];
 
