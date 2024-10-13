@@ -134,176 +134,169 @@ oauth2Client.credentials = {
 
 const service = google.youtube('v3');
 
-const retrieveChannelInfo =
-  (oauth2Client: OAuth2Client) =>
-  (channelName: string): Promise<ChannelInfo> => {
-    return new Promise((resolve, reject) => {
-      service.channels.list(
-        {
-          auth: oauth2Client,
-          id: [channelName],
-          part: ['snippet', 'contentDetails', 'statistics'],
-        },
-        (error, response) => {
-          if (error) {
-            return reject({ error, message: 'The API returned an error: ' });
-          }
+const retrieveChannelInfo = (channelName: string): Promise<ChannelInfo> => {
+  return new Promise((resolve, reject) => {
+    service.channels.list(
+      {
+        auth: oauth2Client,
+        id: [channelName],
+        part: ['snippet', 'contentDetails', 'statistics'],
+      },
+      (error, response) => {
+        if (error) {
+          return reject({ error, message: 'The API returned an error: ' });
+        }
 
-          if (!response) {
-            return reject({ message: 'Response has no content!' });
-          }
+        if (!response) {
+          return reject({ message: 'Response has no content!' });
+        }
 
-          const channels = response.data.items ?? [];
-          if (channels.length === 0) {
-            return reject({ message: 'No channel found.' });
-          }
+        const channels = response.data.items ?? [];
+        if (channels.length === 0) {
+          return reject({ message: 'No channel found.' });
+        }
 
-          const [channel] = channels;
+        const [channel] = channels;
 
-          resolve({
-            id: channel.id ?? '',
-            playlistId: channel.contentDetails?.relatedPlaylists?.uploads ?? null,
-            subscriberCount: +(channel.statistics?.subscriberCount ?? 0),
-            videoCount: +(channel.statistics?.videoCount ?? 0),
-            viewCount: +(channel.statistics?.viewCount ?? 0),
-          });
-        },
-      );
-    });
-  };
-const retrievePlaylistVideos =
-  (oauth2Client: OAuth2Client) =>
-  (playlistId: string, nextPageToken: string | null | undefined): Promise<VideoResult> => {
-    return new Promise((resolve, reject) => {
-      service.playlistItems.list(
-        {
-          auth: oauth2Client,
-          maxResults: 50,
-          pageToken: nextPageToken ?? undefined,
-          part: ['contentDetails'],
-          playlistId,
-        },
-        (error, response) => {
-          if (error) {
-            return reject({ error, message: 'The API returned an error: ' });
-          }
+        resolve({
+          id: channel.id ?? '',
+          playlistId: channel.contentDetails?.relatedPlaylists?.uploads ?? null,
+          subscriberCount: +(channel.statistics?.subscriberCount ?? 0),
+          videoCount: +(channel.statistics?.videoCount ?? 0),
+          viewCount: +(channel.statistics?.viewCount ?? 0),
+        });
+      },
+    );
+  });
+};
+const retrievePlaylistVideos = (
+  playlistId: string,
+  nextPageToken: string | null | undefined,
+): Promise<VideoResult> => {
+  return new Promise((resolve, reject) => {
+    service.playlistItems.list(
+      {
+        auth: oauth2Client,
+        maxResults: 50,
+        pageToken: nextPageToken ?? undefined,
+        part: ['contentDetails'],
+        playlistId,
+      },
+      (error, response) => {
+        if (error) {
+          return reject({ error, message: 'The API returned an error: ' });
+        }
 
-          if (!response) {
-            return reject({ message: 'Response has no content!' });
-          }
+        if (!response) {
+          return reject({ message: 'Response has no content!' });
+        }
 
-          const videos = response.data.items ?? [];
-          if (videos.length === 0) {
-            return reject({ message: 'No video from the playlist found.' });
-          }
+        const videos = response.data.items ?? [];
+        if (videos.length === 0) {
+          return reject({ message: 'No video from the playlist found.' });
+        }
 
-          const parsedVideos = youtubePlaylistVideosSchema.parse(videos);
+        const parsedVideos = youtubePlaylistVideosSchema.parse(videos);
 
-          const formattedVideos = parsedVideos.map((video): VideoFromPlaylistInfo => {
-            return {
-              id: video.id,
-              videoId: video.contentDetails.videoId,
-            };
-          });
+        const formattedVideos = parsedVideos.map((video): VideoFromPlaylistInfo => {
+          return {
+            id: video.id,
+            videoId: video.contentDetails.videoId,
+          };
+        });
 
-          resolve({
-            items: formattedVideos,
-            nextPageToken: response.data.nextPageToken,
-          });
-        },
-      );
-    });
-  };
+        resolve({
+          items: formattedVideos,
+          nextPageToken: response.data.nextPageToken,
+        });
+      },
+    );
+  });
+};
 
-const recursivelyRetrievePlaylistVideos =
-  (oauth2Client: OAuth2Client) =>
-  async (
-    playlistId: string,
-    nextPageToken: string | null | undefined,
-  ): Promise<VideoFromPlaylistInfo[]> => {
-    const videosList: VideoFromPlaylistInfo[] = [];
-    let token: string | undefined | null = nextPageToken;
+const recursivelyRetrievePlaylistVideos = async (
+  playlistId: string,
+  nextPageToken: string | null | undefined,
+): Promise<VideoFromPlaylistInfo[]> => {
+  const videosList: VideoFromPlaylistInfo[] = [];
+  let token: string | undefined | null = nextPageToken;
 
-    do {
-      const result = await retrievePlaylistVideos(oauth2Client)(playlistId, token);
+  do {
+    const result = await retrievePlaylistVideos(playlistId, token);
 
-      videosList.push(...result.items);
+    videosList.push(...result.items);
 
-      token = result.nextPageToken ?? null;
-    } while (token !== null);
+    token = result.nextPageToken ?? null;
+  } while (token !== null);
 
-    return videosList;
-  };
+  return videosList;
+};
 
-const retrieveVideosWithMetadata =
-  (oauth2Client: OAuth2Client) =>
-  (videoIds: string[]): Promise<VideoInfo[]> => {
-    return new Promise((resolve, reject) => {
-      service.videos.list(
-        {
-          auth: oauth2Client,
-          id: videoIds,
-          part: ['snippet', 'contentDetails', 'status', 'statistics'],
-        },
-        (error, response) => {
-          if (error) {
-            return reject({ error, message: 'The API returned an error: ' });
-          }
+const retrieveVideosWithMetadata = (videoIds: string[]): Promise<VideoInfo[]> => {
+  return new Promise((resolve, reject) => {
+    service.videos.list(
+      {
+        auth: oauth2Client,
+        id: videoIds,
+        part: ['snippet', 'contentDetails', 'status', 'statistics'],
+      },
+      (error, response) => {
+        if (error) {
+          return reject({ error, message: 'The API returned an error: ' });
+        }
 
-          if (!response) {
-            return reject({ message: 'Response has no content!' });
-          }
+        if (!response) {
+          return reject({ message: 'Response has no content!' });
+        }
 
-          const videos = response.data.items ?? [];
-          if (videos.length === 0) {
-            return reject({ message: 'No video found.' });
-          }
+        const videos = response.data.items ?? [];
+        if (videos.length === 0) {
+          return reject({ message: 'No video found.' });
+        }
 
-          const parsedVideos = youtubeVideosSchema.parse(videos);
+        const parsedVideos = youtubeVideosSchema.parse(videos);
 
-          const formattedVideos = parsedVideos.map((video): VideoInfo => {
-            return {
-              commentCount: +video.statistics.commentCount,
-              description: video.snippet.description,
-              duration: video.contentDetails.duration,
-              featured: false,
-              id: video.id,
-              kind: video.kind,
-              likeCount: +video.statistics.likeCount,
-              localized: {
-                description: null,
-                title: null,
-              },
-              privacyStatus: video.status.privacyStatus,
-              publishedAt: video.snippet.publishedAt,
-              statsViewable: video.status.publicStatsViewable,
-              thumbnail: video.snippet.thumbnails.high,
-              title: video.snippet.title,
-              viewCount: +video.statistics.viewCount,
-            };
-          });
+        const formattedVideos = parsedVideos.map((video): VideoInfo => {
+          return {
+            commentCount: +video.statistics.commentCount,
+            description: video.snippet.description,
+            duration: video.contentDetails.duration,
+            featured: false,
+            id: video.id,
+            kind: video.kind,
+            likeCount: +video.statistics.likeCount,
+            localized: {
+              description: null,
+              title: null,
+            },
+            privacyStatus: video.status.privacyStatus,
+            publishedAt: video.snippet.publishedAt,
+            statsViewable: video.status.publicStatsViewable,
+            thumbnail: video.snippet.thumbnails.high,
+            title: video.snippet.title,
+            viewCount: +video.statistics.viewCount,
+          };
+        });
 
-          resolve(formattedVideos);
-        },
-      );
-    });
-  };
+        resolve(formattedVideos);
+      },
+    );
+  });
+};
 
-const retrieveAllVideosWithMetadata =
-  (oauth2Client: OAuth2Client) =>
-  async (videoIds: string[]): Promise<VideoInfo[]> => {
-    const videosList: VideoInfo[] = [];
+const retrieveAllVideosWithMetadata = async (videoIds: string[]): Promise<VideoInfo[]> => {
+  const videosList: VideoInfo[] = [];
 
-    const videoIdChunks = chunk(videoIds, 50);
+  const videoIdChunks = chunk(videoIds, 50);
 
-    for (const videoIds of videoIdChunks) {
-      const result = await retrieveVideosWithMetadata(oauth2Client)(videoIds);
+  for (const videoIds of videoIdChunks) {
+    const result = await retrieveVideosWithMetadata(videoIds);
 
-      videosList.push(...result);
-    }
+    videosList.push(...result);
+  }
 
-    return videosList;
-  };
+  return videosList;
+};
 
 const saveVideoFile = (videoItems: VideoInfo[], folderPath: string, fileName: string) => {
   if (!fs.existsSync(folderPath)) {
@@ -321,7 +314,7 @@ const saveVideoFile = (videoItems: VideoInfo[], folderPath: string, fileName: st
   try {
     console.log(`Retrieve information about the channel ${YOUTUBE_CHANNEL_ID}`);
 
-    const channel = await retrieveChannelInfo(oauth2Client)(YOUTUBE_CHANNEL_ID);
+    const channel = await retrieveChannelInfo(YOUTUBE_CHANNEL_ID);
 
     if (!channel.playlistId) {
       console.error('The channel has no playlist');
@@ -330,10 +323,7 @@ const saveVideoFile = (videoItems: VideoInfo[], folderPath: string, fileName: st
 
     console.log(`Retrieve videos in the playlist: ${channel.playlistId}`);
 
-    const videos = await recursivelyRetrievePlaylistVideos(oauth2Client)(
-      channel.playlistId,
-      undefined,
-    );
+    const videos = await recursivelyRetrievePlaylistVideos(channel.playlistId, undefined);
 
     console.log(`Successfully retrieved ${videos.length} videos!`);
 
@@ -341,7 +331,7 @@ const saveVideoFile = (videoItems: VideoInfo[], folderPath: string, fileName: st
 
     console.log('Retrieve videos with metadata...');
 
-    const videosWithData = await retrieveAllVideosWithMetadata(oauth2Client)(videoIds);
+    const videosWithData = await retrieveAllVideosWithMetadata(videoIds);
 
     console.log(`Successfully retrieved metadata of ${videosWithData.length} videos!`);
 
