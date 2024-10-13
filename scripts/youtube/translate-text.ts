@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import AWS from 'aws-sdk';
+import { TranslateClient, TranslateTextCommand } from '@aws-sdk/client-translate';
 import { configDotenv } from 'dotenv';
 import { z } from 'zod';
 
@@ -48,17 +48,15 @@ const VIDEO_FILE_PATH = '../../data/youtube/videos.json';
 const VIDEO_TRANSLATED_FILE_PATH = '../../data/youtube/videos-tr.json';
 const { AWS_ACCESS_KEY_ID, AWS_ACCESS_SECRET_KEY } = process.env;
 
-AWS.config.credentials = new AWS.Credentials(AWS_ACCESS_KEY_ID, AWS_ACCESS_SECRET_KEY);
-
-/**
- * @link https://docs.aws.amazon.com/general/latest/gr/translate-service.html#translate_region
- */
-const endpoint = new AWS.Endpoint('translate.eu-west-3.amazonaws.com ');
-
-const translator = new AWS.Translate({
-  endpoint: endpoint,
-  region: 'eu-west-3',
-});
+const translateClient = new TranslateClient([
+  {
+    credentials: {
+      accessKeyId: AWS_ACCESS_KEY_ID,
+      secretAccessKey: AWS_ACCESS_SECRET_KEY,
+    },
+    region: 'eu-west-3',
+  },
+]);
 
 const readVideosFile = (filePath: string): VideoInfo[] => {
   const absolutePath = path.resolve(__dirname, filePath);
@@ -70,33 +68,17 @@ const readVideosFile = (filePath: string): VideoInfo[] => {
 };
 
 const translateContent =
-  (translator: AWS.Translate) =>
-  (text: string): Promise<string | null> => {
-    /**
-     * @link https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html
-     */
-    const params: AWS.Translate.TranslateTextRequest = {
-      // Maximum length of 10000
+  (translator: TranslateClient) =>
+  async (text: string): Promise<string | null> => {
+    const command = new TranslateTextCommand({
       SourceLanguageCode: 'fr',
       TargetLanguageCode: 'en',
-      Text: text,
-    };
-
-    return new Promise((resolve, reject) => {
-      translator.translateText(params, (error, result) => {
-        if (error) {
-          console.error('Error calling Translate: ' + error.message + error.stack);
-          reject(error);
-        }
-
-        if (!result) {
-          console.log('The translation returned no result!');
-          resolve(null);
-        }
-
-        resolve(result.TranslatedText);
-      });
+      Text: text, // Maximum length of 10000
     });
+
+    const result = await translator.send(command);
+
+    return result.TranslatedText ?? null;
   };
 
 const saveVideoFile = (videoItems: VideoInfo[], filePath: string) => {
@@ -116,9 +98,9 @@ const saveVideoFile = (videoItems: VideoInfo[], filePath: string) => {
     const { title, description } = videos[i];
 
     try {
-      const titleResult = title.length > 0 ? await translateContent(translator)(title) : null;
+      const titleResult = title.length > 0 ? await translateContent(translateClient)(title) : null;
       const descriptionResult =
-        description.length > 0 ? await translateContent(translator)(description) : null;
+        description.length > 0 ? await translateContent(translateClient)(description) : null;
 
       videos[i].localized = {
         description: descriptionResult,

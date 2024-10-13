@@ -1,7 +1,6 @@
 import readline from 'readline';
 
 import { configDotenv } from 'dotenv';
-import { Credentials, OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { z } from 'zod';
 
@@ -39,25 +38,6 @@ const askAuthorizationSuccessCode = (): Promise<string> => {
   });
 };
 
-const generateAccessToken = (
-  oauth2Client: OAuth2Client,
-  authorizationCode: string,
-): Promise<Credentials> => {
-  return new Promise((resolve, reject) => {
-    oauth2Client.getToken(authorizationCode, (err, token) => {
-      if (err) {
-        return reject({ err, message: 'Error while trying to retrieve access token' });
-      }
-
-      if (!token) {
-        return reject({ message: 'The token is not defined!' });
-      }
-
-      resolve(token);
-    });
-  });
-};
-
 const authorize = async () => {
   const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } = process.env;
   const oauth2Client = new OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
@@ -71,7 +51,7 @@ const authorize = async () => {
 
   const authorizationCode = await askAuthorizationSuccessCode();
 
-  const accessToken = await generateAccessToken(oauth2Client, authorizationCode);
+  const { tokens: accessToken } = await oauth2Client.getToken(authorizationCode);
 
   console.log('The Access Token is: ', accessToken);
 };
