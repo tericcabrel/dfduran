@@ -16,12 +16,16 @@ export const formatPublishDate = (dateString: string) => {
     year: 'numeric' as const,
   };
 
-  return new Intl.DateTimeFormat('fr-FR', options).format(date);
+  return new Intl.DateTimeFormat('en-US', options).format(date);
 };
 
 export const formatYouTubeDuration = (value: string) => {
-  // PT13M21S
+  // PT13M21S or PT54S
   const [minutes] = value.replace('PT', '').split('M');
 
-  return `${minutes} min`;
+  if (/^\d+$/.test(minutes)) {
+    return `${minutes} min`;
+  }
+
+  return `${parseInt(minutes, 10)} sec`;
 };
